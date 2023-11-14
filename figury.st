@@ -4,6 +4,7 @@ Object subclass: #Wielokat
 	poolDictionaries: ''
 	category: 'JezykiProgramowania'!
 
+
 !Wielokat methodsFor: 'initialize-release'!
 
 initialize: liczbaWierzcholkow name: nowaNazwa
@@ -29,11 +30,13 @@ nazwa: nowa_nazwa
 
 drukuj
   "drukuje nazwe wielokata i jego wierzcholkow"
-
   Transcript cr;
 	show: 'Wierzcholki wielokata to: ';
 	cr.
-	1 to: wierzcholki size do: [:i | Transcript show: (wierzcholki at: i) printString; cr.].! !
+	1 to: wierzcholki size do: 
+    [:i |
+        Transcript show: ((wierzcholki at: i) roundTo: 0.0001) printString;cr.
+    ].! !
 
 
 
@@ -81,3 +84,43 @@ initialize: bok
 	wierzcholki at: 2 put: bok@0.
 	wierzcholki at: 3 put: bok@bok.
 	wierzcholki at: 4 put: 0@bok.! !
+
+Wielokat subclass: #Szesciokat
+    instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'JezykiProgramowania'!
+
+
+!Szesciokat methodsFor: 'initialize-release'!
+
+initialize: bok
+    super initialize: 6 name: 'Szesciokat'.
+    "dziala ale uwaga na kazdy nawias kazdy jest niezbedny"
+    "nie wiem czy da sie to jakos petla zrobic"
+    wierzcholki at: 2 put: (bok * 2)  @ 0.
+    wierzcholki at: 3 put: (bok / 2) @ (((3 sqrt) / 2) * bok).
+    wierzcholki at: 4 put: ((bok * 3) / 2) @ (((3 sqrt) / 2) * bok).
+    wierzcholki at: 5 put: (bok / 2) @ ((((3 sqrt) / 2) * -1) * bok).
+    wierzcholki at: 6 put: ((bok * 3) / 2) @ ((((3 sqrt) / 2) * -1) * bok).
+! !
+
+!Szesciokat methodsFor: 'actions'!
+
+pole
+    | bok wynik |
+    bok := (((wierzcholki at: 4) x) abs) - (((wierzcholki at: 3) x) abs).
+    wynik := (((bok squared) * (3 sqrt) * 3) / 2).
+    ^wynik.! !
+
+
+!Szesciokat methodsFor: 'displaying'!
+
+drukuj
+  "drukuje nazwe wielokata i jego wierzcholkow"
+
+  super drukuj.
+  Transcript cr;
+	show: 'Pole szesciokata to: ';
+  show: self pole printString.
+  ! !
