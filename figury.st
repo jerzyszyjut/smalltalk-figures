@@ -30,12 +30,10 @@ nazwa: nowa_nazwa
 
 drukuj
   "drukuje nazwe wielokata i jego wierzcholkow"
-  Transcript cr;
-	show: 'Wierzcholki wielokata to: ';
-	cr.
+  Transcript show: 'Wierzcholki wielokata to: ';cr.
 	1 to: wierzcholki size do: 
     [:i |
-        Transcript show: ((wierzcholki at: i) roundTo: 0.0001) printString;cr.
+        Transcript show: (wierzcholki at: i) printString;cr.
     ].! !
 
 
@@ -65,8 +63,7 @@ drukuj
   super drukuj.
   Transcript cr;
 	show: 'Pole kwadratu to: ';
-  show: self pole printString.
-  ! !
+  show: self pole printString;cr.! !
 
 !Kwadrat methodsFor: 'actions'!
 
@@ -85,33 +82,71 @@ initialize: bok
 	wierzcholki at: 3 put: bok@bok.
 	wierzcholki at: 4 put: 0@bok.! !
 
+!Kwadrat methodsFor: 'transformations'!
+
+wysrodkuj
+	"przesun srodek kwadratu do punktu (0,0)"
+
+	| srodek |
+	srodek:=((wierzcholki at: 1) x + ((wierzcholki at: 2) x / 2))@((wierzcholki at: 1) y + ((wierzcholki at: 3) y / 2)).
+	1 to: wierzcholki size do: 
+		[:i |
+				wierzcholki at: i put: ((wierzcholki at: i) x - srodek x)@( (wierzcholki at: i) y - srodek y)
+		].
+	self drukuj.! !
+
 Wielokat subclass: #Szesciokat
-    instanceVariableNames: ''
+  instanceVariableNames: 'bok '
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'JezykiProgramowania'!
 
-
 !Szesciokat methodsFor: 'initialize-release'!
 
-initialize: bok
-    super initialize: 6 name: 'Szesciokat'.
-    "dziala ale uwaga na kazdy nawias kazdy jest niezbedny"
-    "nie wiem czy da sie to jakos petla zrobic"
-    wierzcholki at: 2 put: (bok * 2)  @ 0.
-    wierzcholki at: 3 put: (bok / 2) @ (((3 sqrt) / 2) * bok).
-    wierzcholki at: 4 put: ((bok * 3) / 2) @ (((3 sqrt) / 2) * bok).
-    wierzcholki at: 5 put: (bok / 2) @ ((((3 sqrt) / 2) * -1) * bok).
-    wierzcholki at: 6 put: ((bok * 3) / 2) @ ((((3 sqrt) / 2) * -1) * bok).
-! !
+initialize: poczatkowyBok
+	"tworzy szesciokat foremny o podanym boku"
+	bok:=poczatkowyBok.
+	super initialize: 6 name: 'Szesciokat foremny'.
+	self oblicz_wierzcholki.! !
+
+!Szesciokat methodsFor: 'calculations'!
+
+oblicz_wierzcholki
+	"oblicza wspolrzedne wierzcholkow szesciokata"
+	| srodek pi |
+	srodek:= ((wierzcholki at: 1) x + bok)@((wierzcholki at: 1) y).
+	pi := Float pi.
+
+	1 to: wierzcholki size do: 
+		[:i |
+				wierzcholki at: i put: ((srodek x + (bok * (i * pi / 3) cos))@(srodek y + (bok * (i * pi / 3) sin)))
+		].! !
+
+!Szesciokat methodsFor: 'transformations'!	
+
+wysrodkuj
+	"przesun srodek szesciokata do punktu (0,0)"
+
+	wierzcholki at: 1 put: (0 - bok)@(0).
+	self oblicz_wierzcholki.
+	self drukuj.! !
 
 !Szesciokat methodsFor: 'actions'!
 
 pole
-    | bok wynik |
-    bok := (((wierzcholki at: 4) x) abs) - (((wierzcholki at: 3) x) abs).
+    | wynik |
     wynik := (((bok squared) * (3 sqrt) * 3) / 2).
     ^wynik.! !
+
+!Szesciokat methodsFor: 'arithmetic'!
++ figura
+	"dodaj 2 figury w sensie pola"
+
+	| p nowyBok |
+
+	p:=self pole + figura pole.
+	nowyBok:=((p * 2 / 3) * (1 / (3 sqrt))) sqrt.
+	^(Szesciokat new) initialize: nowyBok! !
 
 
 !Szesciokat methodsFor: 'displaying'!
@@ -122,5 +157,10 @@ drukuj
   super drukuj.
   Transcript cr;
 	show: 'Pole szesciokata to: ';
-  show: self pole printString.
-  ! !
+  show: self pole printString;cr;cr.! !
+
+x := Szesciokat new initialize: 2.
+x drukuj.
+x wysrodkuj.
+x := x + x.
+x drukuj.

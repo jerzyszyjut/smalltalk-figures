@@ -17,7 +17,6 @@ class Wielokat:
 
 class Szesciokat(Wielokat):
   bok: float
-  srodek: tuple[float, float]
 
   def __init__(self, bok: float):
     super().__init__(6, "Szesciokat")
