@@ -30,12 +30,25 @@ nazwa: nowa_nazwa
 
 drukuj
   "drukuje nazwe wielokata i jego wierzcholkow"
+
+	(self checkIfWielokat: self) ifTrue: [
+		Transcript show: 'Ta klasa jest wielokatem';cr.
+	] ifFalse: [
+		Transcript show: 'Ta klasa nie jest wielokatem';cr.
+	].
+
   Transcript show: 'Wierzcholki wielokata to: ';cr.
 	1 to: wierzcholki size do: 
     [:i |
         Transcript show: (wierzcholki at: i) printString;cr.
     ].! !
 
+!Wielokat methodsFor: 'checking'!
+
+checkIfWielokat: wielokat
+	"sprawdza czy dany obiekt jest podklasa Wielokatu"
+
+	^(wielokat isKindOf: Wielokat)! !
 
 
 Wielokat subclass: #Kwadrat
@@ -50,9 +63,15 @@ Wielokat subclass: #Kwadrat
 + figura
 	"dodaj 2 figury w sensie pola"
 
-	| p |
+	| p drugie_pole |
+	(self checkIfWielokat: figura) ifTrue: [
+		drugie_pole := figura pole.
+	]
+	ifFalse: [
+		drugie_pole := figura
+	].
 
-	p:=self pole + figura pole.
+	p:=self pole + drugie_pole.
 	^(Kwadrat new) initialize: p sqrt! !
 
 !Kwadrat methodsFor: 'displaying'!
@@ -142,9 +161,15 @@ pole
 + figura
 	"dodaj 2 figury w sensie pola"
 
-	| p nowyBok |
+	| p nowyBok drugie_pole |
+	(self checkIfWielokat: figura) ifTrue: [
+		drugie_pole := figura pole.
+	]
+	ifFalse: [
+		drugie_pole := figura
+	].
 
-	p:=self pole + figura pole.
+	p:=self pole + drugie_pole.
 	nowyBok:=((p * 2 / 3) * (1 / (3 sqrt))) sqrt.
 	^(Szesciokat new) initialize: nowyBok! !
 
@@ -188,4 +213,21 @@ Transcript cr; show: 'wysrodkuj kwadrat_1';cr.
 kwadrat_1 wysrodkuj.
 kwadrat_1 drukuj.
 
+Transcript cr; show: 'Sprawdz czy kwadrat_1 jest wielokatem';cr.
+Transcript show: (kwadrat_1 checkIfWielokat: kwadrat_1) printString.
 
+wielokat_1 := Wielokat new initialize: 3 name: 'Wielokat'.
+Transcript cr; show: 'Sprawdz czy nowy wielokat_1 jest wielokatem';cr.
+Transcript show: (wielokat_1 checkIfWielokat: wielokat_1) printString.
+
+Transcript cr; show: 'Wydrkuj wielokat';cr.
+wielokat_1 drukuj.
+
+kwadrat_1 := kwadrat_1 + 12.
+Transcript cr; show: 'Dodaj do kwadratu_1 liczbe 12';cr.
+kwadrat_1 drukuj.
+
+szesciokat_1 drukuj.
+Transcript cr; show: 'Dodaj do szesciokat_1 liczbe 10';cr.
+szesciokat_1 := szesciokat_1 + 10.
+szesciokat_1 drukuj.
