@@ -159,8 +159,33 @@ drukuj
 	show: 'Pole szesciokata to: ';
   show: self pole printString;cr;cr.! !
 
-x := Szesciokat new initialize: 2.
-x drukuj.
-x wysrodkuj.
-x := x + x.
-x drukuj.
+szesciokat_1 := Szesciokat new initialize: 2.
+szesciokat_2 := Szesciokat new initialize: 3.
+kwadrat_1 := Kwadrat new initialize: 4.
+
+Transcript show: 'Dane są wielokaty:'; cr.
+szesciokat_1 drukuj.
+szesciokat_2 drukuj.
+kwadrat_1 drukuj.
+
+Transcript cr; show: 'szesciokat_1 + szesciokat_2';cr.
+szesciokat_3 := szesciokat_1 + szesciokat_2.
+szesciokat_3 drukuj.
+
+Transcript cr; show: 'szesciokat_1 + kwadrat_1';cr.
+szesciokat_4 := szesciokat_1 + kwadrat_1.
+szesciokat_4 drukuj.
+
+Transcript cr; show: 'kwadrat_1 + szesciokat_2';cr.
+kwadrat_2 := kwadrat_1 + szesciokat_2.
+kwadrat_2 drukuj.
+
+Transcript cr; show: 'wysrodkuj szesciokat_1';cr.
+szesciokat_1 wysrodkuj.
+szesciokat_1 drukuj.
+
+Transcript cr; show: 'wysrodkuj kwadrat_1';cr.
+kwadrat_1 wysrodkuj.
+kwadrat_1 drukuj.
+
+
